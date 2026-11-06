@@ -1,0 +1,85 @@
+# Byte-compiled / optimized
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Virtual environments
+.venv/
+venv/
+backend/.venv/
+
+# Distribution / packaging
+dist/
+build/
+*.egg-info/
+
+# Environment and secrets
+.env
+.env.*
+!.env.example
+.env.worker
+*.pem
+*.key
+*.keystore
+*.jks
+google-services.json
+
+# Databases and local files
+*.db
+*.db-journal
+*.sqlite
+*.sqlite3
+backend/data/
+backend/var/
+media/
+tmp/
+
+# Test / coverage / tooling
+.pytest_cache/
+.ruff_cache/
+.pyright/
+.coverage
+coverage.xml
+htmlcov/
+.mypy_cache/
+
+# Node
+node_modules/
+npm-debug.log*
+
+# Flutter / Dart
+app/.dart_tool/
+app/.flutter-plugins
+app/.flutter-plugins-dependencies
+app/.packages
+app/build/
+app/coverage/
+app/ios/Pods/
+app/ios/.symlinks/
+app/android/.gradle/
+app/android/local.properties
+app/windows/flutter/ephemeral/
+app/macos/Flutter/ephemeral/
+app/linux/flutter/ephemeral/
+*.g.dart
+*.freezed.dart
+!app/lib/generated/**
+# Drift output is committed so CI can analyze/test without running build_runner.
+!app/lib/data/local/database.g.dart
+
+# IDEs and OS
+.idea/
+.vscode/
+*.iml
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Logs
+*.log
+logs/
+worker.log
+
+# Agent local state
+.claude/settings.local.json

@@ -1,0 +1,107 @@
+{
+  "@@locale": "es",
+  "appTitle": "Aura",
+  "tabLibrary": "Biblioteca",
+  "tabSearch": "Buscar",
+  "tabSettings": "Ajustes",
+  "loginTitle": "Entra en tu música",
+  "loginSubtitle": "Tu biblioteca, tus portadas y tus letras. En cualquier lugar.",
+  "email": "Correo",
+  "password": "Contraseña",
+  "signIn": "Entrar",
+  "signingIn": "Entrando…",
+  "invalidCredentials": "Correo o contraseña incorrectos.",
+  "connectionError": "No se pudo conectar. Revisa tu red e inténtalo de nuevo.",
+  "libraryTitle": "Biblioteca",
+  "songs": "Canciones",
+  "albums": "Álbumes",
+  "artists": "Artistas",
+  "searchHint": "Busca canciones, álbumes o artistas",
+  "searchEmpty": "Busca en tu biblioteca",
+  "searchNoResults": "Sin resultados para «{query}»",
+  "@searchNoResults": {
+    "placeholders": {
+      "query": {
+        "type": "String"
+      }
+    }
+  },
+  "favorites": "Favoritos",
+  "recentlyAdded": "Añadidas recientemente",
+  "play": "Reproducir",
+  "shuffle": "Aleatorio",
+  "pause": "Pausar",
+  "next": "Siguiente",
+  "previous": "Anterior",
+  "queue": "Cola",
+  "nowPlaying": "Reproduciendo",
+  "lyrics": "Letra",
+  "noLyrics": "Todavía no hay letra para esta canción.",
+  "lyricsOffset": "Ajuste de letra",
+  "syncLyrics": "Sincronizar",
+  "settingsTitle": "Ajustes",
+  "account": "Cuenta",
+  "theme": "Tema",
+  "themeSystem": "Sistema",
+  "themeDark": "Oscuro",
+  "themeLight": "Claro",
+  "audio": "Reproducción",
+  "normalizeVolume": "Normalizar volumen",
+  "downloadsOnlyWifi": "Descargar solo con Wi-Fi",
+  "storage": "Almacenamiento",
+  "clearCache": "Borrar caché",
+  "signOut": "Cerrar sesión",
+  "version": "Versión",
+  "retry": "Reintentar",
+  "cancel": "Cancelar",
+  "done": "Hecho",
+  "addToQueue": "Añadir a la cola",
+  "addToFavorites": "Añadir a favoritos",
+  "removeFromFavorites": "Quitar de favoritos",
+  "emptyLibrary": "Tu biblioteca está vacía",
+  "emptyLibraryHint": "Añade música desde el panel de ingesta.",
+  "offline": "Sin conexión",
+  "refresh": "Actualizar",
+  "tracksCount": "{count, plural, =1{1 canción} other{{count} canciones}}",
+  "@tracksCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "thisWeek": "Esta semana",
+  "topTracks": "Más escuchadas",
+  "topArtists": "Artistas favoritos",
+  "streak": "{days} días seguidos",
+  "@streak": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "gallery": "Galería",
+  "designSystem": "Sistema de diseño",
+  "loading": "Cargando…",
+  "unknownArtist": "Artista desconocido",
+  "unknownAlbum": "Álbum desconocido",
+  "trackNumber": "Pista {number}",
+  "@trackNumber": {
+    "placeholders": {
+      "number": {
+        "type": "int"
+      }
+    }
+  },
+  "queueEmpty": "La cola está vacía",
+  "searching": "Buscando…",
+  "syncDone": "Biblioteca actualizada",
+  "download": "Descargar",
+  "downloaded": "Descargada",
+  "removeDownload": "Quitar descarga",
+  "close": "Cerrar",
+  "sleepTimer": "Temporizador",
+  "speed": "Velocidad",
+  "replayGain": "Volumen"
+}

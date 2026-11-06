@@ -1,0 +1,107 @@
+{
+  "@@locale": "en",
+  "appTitle": "Aura",
+  "tabLibrary": "Library",
+  "tabSearch": "Search",
+  "tabSettings": "Settings",
+  "loginTitle": "Sign in to your music",
+  "loginSubtitle": "Your library, covers and lyrics. Everywhere.",
+  "email": "Email",
+  "password": "Password",
+  "signIn": "Sign in",
+  "signingIn": "Signing in…",
+  "invalidCredentials": "Wrong email or password.",
+  "connectionError": "Could not connect. Check your network and try again.",
+  "libraryTitle": "Library",
+  "songs": "Songs",
+  "albums": "Albums",
+  "artists": "Artists",
+  "searchHint": "Search songs, albums or artists",
+  "searchEmpty": "Search your library",
+  "searchNoResults": "No results for “{query}”",
+  "@searchNoResults": {
+    "placeholders": {
+      "query": {
+        "type": "String"
+      }
+    }
+  },
+  "favorites": "Favorites",
+  "recentlyAdded": "Recently added",
+  "play": "Play",
+  "shuffle": "Shuffle",
+  "pause": "Pause",
+  "next": "Next",
+  "previous": "Previous",
+  "queue": "Queue",
+  "nowPlaying": "Now playing",
+  "lyrics": "Lyrics",
+  "noLyrics": "No lyrics for this song yet.",
+  "lyricsOffset": "Lyrics offset",
+  "syncLyrics": "Sync",
+  "settingsTitle": "Settings",
+  "account": "Account",
+  "theme": "Theme",
+  "themeSystem": "System",
+  "themeDark": "Dark",
+  "themeLight": "Light",
+  "audio": "Playback",
+  "normalizeVolume": "Normalize volume",
+  "downloadsOnlyWifi": "Download on Wi-Fi only",
+  "storage": "Storage",
+  "clearCache": "Clear cache",
+  "signOut": "Sign out",
+  "version": "Version",
+  "retry": "Retry",
+  "cancel": "Cancel",
+  "done": "Done",
+  "addToQueue": "Add to queue",
+  "addToFavorites": "Add to favorites",
+  "removeFromFavorites": "Remove from favorites",
+  "emptyLibrary": "Your library is empty",
+  "emptyLibraryHint": "Add music from the ingest panel.",
+  "offline": "Offline",
+  "refresh": "Refresh",
+  "tracksCount": "{count, plural, =1{1 song} other{{count} songs}}",
+  "@tracksCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "thisWeek": "This week",
+  "topTracks": "Most played",
+  "topArtists": "Favorite artists",
+  "streak": "{days} days in a row",
+  "@streak": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "gallery": "Gallery",
+  "designSystem": "Design system",
+  "loading": "Loading…",
+  "unknownArtist": "Unknown artist",
+  "unknownAlbum": "Unknown album",
+  "trackNumber": "Track {number}",
+  "@trackNumber": {
+    "placeholders": {
+      "number": {
+        "type": "int"
+      }
+    }
+  },
+  "queueEmpty": "The queue is empty",
+  "searching": "Searching…",
+  "syncDone": "Library updated",
+  "download": "Download",
+  "downloaded": "Downloaded",
+  "removeDownload": "Remove download",
+  "close": "Close",
+  "sleepTimer": "Sleep timer",
+  "speed": "Speed",
+  "replayGain": "Volume"
+}

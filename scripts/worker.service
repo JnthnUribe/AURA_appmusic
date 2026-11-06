@@ -1,0 +1,34 @@
+# Aura ingestion worker (systemd)
+#
+# 1. Replace /home/aura/aura with the absolute path to this repository and
+#    /home/aura with your user's home.
+# 2. cp scripts/worker.service ~/.config/systemd/user/aura-worker.service
+# 3. systemctl --user daemon-reload
+# 4. systemctl --user enable --now aura-worker
+# 5. journalctl --user -u aura-worker -f
+#
+# The worker needs ffmpeg and deno on PATH and a .env with DATABASE_URL,
+# R2_* and WORKER_TOKEN. It opens no inbound ports.
+
+[Unit]
+Description=Aura ingestion worker
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+WorkingDirectory=/home/aura/aura/backend
+EnvironmentFile=/home/aura/aura/.env
+Environment=PATH=/home/aura/.local/bin:/usr/local/bin:/usr/bin:/bin
+ExecStart=/home/aura/.local/bin/uv run python -m aura.worker
+Restart=always
+RestartSec=10
+Nice=10
+NoNewPrivileges=true
+PrivateTmp=true
+# Keep logs bounded; journald also enforces its own limits.
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=default.target

@@ -1,0 +1,5 @@
+{
+  "AURA_API_BASE_URL": "https://aura-api.onrender.com",
+  "AURA_ENV": "prod",
+  "AURA_DEV_GALLERY": false
+}
