@@ -126,6 +126,26 @@ is documented in `docs/DECISIONS/0004-worker-long-poll.md`.
   deduplicates on `(user_id, idempotency_key)`, so retries never double-count.
 - Batches are flushed on connectivity, app pause and playback completion.
 
+### 6. Offline audio downloads
+
+1. The app requests `/v1/tracks/{id}/stream` and receives a short-lived signed
+   URL.
+2. `DownloadController` keeps at most two transfers active; the rest wait in
+   memory. Progress is streamed to the UI.
+3. The file is written to `<app support>/audio/<trackId>.m4a` with a dedicated
+   Dio instance, so the JWT is never sent to R2.
+4. On success the path is stored in `local_tracks.local_audio_path`; the player
+   prefers that file over streaming and works in airplane mode.
+5. Removing a download deletes the file and clears the column. "Download
+   favorites" queues every favorite in the library.
+
+### 7. Statistics
+
+`GET /v1/stats/overview?range=7d|30d|90d|all` aggregates plays, minutes,
+unique tracks, streak, top tracks and top artists. The Flutter screen requests
+one range at a time with a `FutureProvider.family`, so switching ranges is a
+cheap refetch and nothing extra is persisted in SQLite.
+
 ## Deployment topology
 
 | Piece | Host | Notes |
@@ -169,7 +189,7 @@ tests exist in this repo; external services still require credentials.
 | M1 — cloud API + database | 0–3 | Done: repo, FastAPI, Neon-ready migrations, auth, library API, Dart client |
 | M2 — first enriched song | 4–6 | Done: queue/worker, yt-dlp, R2, HD covers, synced lyrics |
 | M3 — usable MVP | 7–9 | Done: Flutter design system, full player, Spotify-style lyrics |
-| M4 — delight + offline | 10–12 | Partial: stats/achievements API, metadata cache and play outbox; no Home/Inbox UI, no device audio downloads, no home widgets |
+| M4 — delight + offline | 10–12 | Partial: stats API + in-app statistics screen, achievements, metadata/lyrics cache, play outbox and audio downloads; no Home/Inbox UI, no home widgets, no resume-after-kill or LRU |
 | M5 — quality + AI | 13–14 | Done for phase 13 quality/release; phase 14 AI is not implemented (only configuration placeholders exist) |
 
 ## Known limitations
@@ -181,10 +201,13 @@ tests exist in this repo; external services still require credentials.
 - Windows playback needs `libmpv-2.dll` next to the executable.
 - Phase 11 home-screen widgets and Phase 14 AI features are out of scope for
   this build.
-- Phase 10 has stats/achievements endpoints but no Home, Inbox or stats screens
-  in the app.
-- Phase 12 caches metadata, lyrics, queue and play events, but there is no
-  device audio download manager; playback of uncached audio needs the network.
+- Phase 10 has stats/achievements endpoints and a statistics screen, but no
+  Home or Inbox feed.
+- Phase 12 caches metadata, lyrics, queue and play events and can download
+  audio tracks to disk (two at a time, with progress, cancellation and removal).
+  Resume after a killed process, SHA-256 verification, LRU eviction and a
+  dedicated downloads screen are not implemented; the Wi-Fi-only preference is
+  stored but not enforced.
 - Golden tests are generated on Windows; other hosts skip them to avoid
   platform-specific text rasterization diffs.
 

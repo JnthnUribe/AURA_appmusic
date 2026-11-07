@@ -108,7 +108,8 @@ when the OS requests reduced motion.
 | `/login` | email + password | glass card, inline validation, Spanish errors |
 | `/library` | songs / albums / artists | segmented control, pull-to-refresh, sync button |
 | `/search` | local + remote search | debounced, grouped results |
-| `/settings` | preferences | theme, volume normalization, Wi-Fi-only, cache |
+| `/settings` | preferences | theme, volume normalization, downloads, cache |
+| `/stats` | statistics | 7/30/90/all ranges, totals, streak, top artists and tracks |
 | `/album/:id` | album detail | hero cover, track list |
 | `/artist/:id` | artist detail | image, albums, tracks |
 | `/player` | now playing | artwork, scrubber, queue, sleep timer |
@@ -121,8 +122,8 @@ when the OS requests reduced motion.
 - **Empty**: one line of copy plus a single action; no illustrations.
 - **Error**: plain Spanish sentence plus retry; never a raw exception.
 - **Offline**: cached metadata, lyrics, queue and play events stay usable;
-  audio itself is streamed unless the file is already cached locally. Sync
-  errors surface as a quiet, retryable message instead of a blocking dialog.
+  downloaded tracks play from disk, while everything else streams. Sync errors
+  surface as a quiet, retryable message instead of a blocking dialog.
 - **Long lists**: lazy slivers; artwork is decoded at display size.
 
 ## Accessibility

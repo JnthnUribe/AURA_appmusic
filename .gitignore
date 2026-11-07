@@ -1,18 +1,47 @@
-# Byte-compiled / optimized
+# ---------------------------------------------------------------------------
+# Aura — ignore rules
+#
+# Committed on purpose (do not ignore):
+#   app/lib/data/local/database.g.dart   Drift output, lets CI analyze/test
+#   app/lib/l10n/app_localizations*.dart generated UI copy (Spanish default)
+#   app/test/goldens/*.png               visual baseline for the login screen
+#   backend/uv.lock                      reproducible Python environment
+#   docs/openapi.json                    published API contract
+# ---------------------------------------------------------------------------
+
+# Byte-compiled / optimized / caches
 __pycache__/
 *.py[cod]
 *$py.class
 *.so
+*.egg
+*.egg-info/
+.eggs/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.dmypy.json
+.pyright/
+.pyre/
+.tox/
+.nox/
+.cache/
+.pip-wheel-metadata/
+cython_debug/
+.ipynb_checkpoints/
 
 # Virtual environments
 .venv/
 venv/
+ENV/
+env.bak/
 backend/.venv/
 
 # Distribution / packaging
 dist/
 build/
-*.egg-info/
+sdist/
+wheels/
 
 # Environment and secrets
 .env
@@ -21,11 +50,15 @@ build/
 .env.worker
 *.pem
 *.key
-*.keystore
+*.p12
 *.jks
+*.keystore
+key.properties
 google-services.json
+GoogleService-Info.plist
+service-account*.json
 
-# Databases and local files
+# Databases and local media
 *.db
 *.db-journal
 *.sqlite
@@ -34,33 +67,52 @@ backend/data/
 backend/var/
 media/
 tmp/
+*.m4a
+*.mp3
+*.flac
+*.wav
+!app/test/goldens/*.png
 
 # Test / coverage / tooling
-.pytest_cache/
-.ruff_cache/
-.pyright/
 .coverage
+.coverage.*
 coverage.xml
+coverage/
 htmlcov/
-.mypy_cache/
+lcov.info
+nosetests.xml
+junit.xml
+app/coverage/
+app/test/failures/
 
-# Node
+# Node (reference client generation)
 node_modules/
 npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
 
 # Flutter / Dart
+.dart_tool/
+.pub-cache/
+.pub/
 app/.dart_tool/
 app/.flutter-plugins
 app/.flutter-plugins-dependencies
 app/.packages
 app/build/
-app/coverage/
 app/ios/Pods/
 app/ios/.symlinks/
+app/ios/Flutter/Generated.xcconfig
+app/ios/Flutter/flutter_export_environment.sh
+app/macos/Pods/
+app/macos/Flutter/ephemeral/
 app/android/.gradle/
 app/android/local.properties
+app/android/app/debug/
+app/android/app/profile/
+app/android/app/release/
 app/windows/flutter/ephemeral/
-app/macos/Flutter/ephemeral/
 app/linux/flutter/ephemeral/
 *.g.dart
 *.freezed.dart
@@ -68,13 +120,30 @@ app/linux/flutter/ephemeral/
 # Drift output is committed so CI can analyze/test without running build_runner.
 !app/lib/data/local/database.g.dart
 
-# IDEs and OS
+# IDEs and editors
 .idea/
 .vscode/
 *.iml
+*.ipr
+*.iws
+*.swp
+*.swo
+*~
+.project
+.classpath
+.settings/
+
+# OS metadata
 .DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+.fseventsd
 Thumbs.db
+ehthumbs.db
 desktop.ini
+$RECYCLE.BIN/
 
 # Logs
 *.log

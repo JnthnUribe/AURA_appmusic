@@ -79,12 +79,13 @@ and down, docs/ADR updated, OpenAPI exported, current-state section refreshed.
 
 ## Current state (2026-11)
 
-- Phases 0–9 implemented. Phase 10 has stats/achievements APIs but no Home or
-  stats UI. Phase 12 caches metadata/lyrics and queues plays, but has no device
-  audio download manager. Phase 11 widgets and phase 14 AI are not implemented.
+- Phases 0–9 implemented. Phase 10 has stats/achievements APIs and a statistics
+  screen (no Home/Inbox feed). Phase 12 caches metadata/lyrics, queues plays and
+  downloads audio on demand (no resume-after-kill, SHA-256 verification or LRU).
+  Phase 11 widgets and phase 14 AI are not implemented.
 - Backend: 44 tests pass, 6 integration tests skip without
   `AURA_TEST_DATABASE_URL`; Pyright 0 errors.
-- App: 37 tests pass; analyzer clean; goldens generated on Windows.
+- App: 41 tests pass; analyzer clean; goldens generated on Windows.
 - Known local blockers: no Docker/Postgres/R2 credentials; background audio and
   Windows `libmpv-2.dll` unverified; `uv run pyright` is blocked by Windows App
   Control (use `npx --yes pyright`).
@@ -97,6 +98,8 @@ and down, docs/ADR updated, OpenAPI exported, current-state section refreshed.
 | Change schema | `db/models.py`, `alembic/versions/`, `docs/DATA_MODEL.md` |
 | Worker/ingest | `worker/pipeline.py`, `providers/`, `services/jobs.py` |
 | Player | `app/lib/features/player/` |
+| Downloads | `app/lib/features/downloads/`, `components/track_tile.dart` |
+| Stats | `app/lib/features/stats/`, `api/routers/stats.py` |
 | Design | `app/lib/core/design/tokens.dart`, `docs/DESIGN.md` |
 | Release | `.claude/skills/aura-release/SKILL.md`, `render.yaml` |
 
