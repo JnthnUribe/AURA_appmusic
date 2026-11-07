@@ -553,6 +553,102 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Volumen'**
   String get replayGain;
+
+  /// No description provided for @statsTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Estadísticas'**
+  String get statsTitle;
+
+  /// No description provided for @plays.
+  ///
+  /// In es, this message translates to:
+  /// **'Reproducciones'**
+  String get plays;
+
+  /// No description provided for @minutes.
+  ///
+  /// In es, this message translates to:
+  /// **'Minutos escuchados'**
+  String get minutes;
+
+  /// No description provided for @uniqueTracks.
+  ///
+  /// In es, this message translates to:
+  /// **'Canciones distintas'**
+  String get uniqueTracks;
+
+  /// No description provided for @streakLabel.
+  ///
+  /// In es, this message translates to:
+  /// **'Racha'**
+  String get streakLabel;
+
+  /// No description provided for @range7d.
+  ///
+  /// In es, this message translates to:
+  /// **'7 días'**
+  String get range7d;
+
+  /// No description provided for @range30d.
+  ///
+  /// In es, this message translates to:
+  /// **'30 días'**
+  String get range30d;
+
+  /// No description provided for @range90d.
+  ///
+  /// In es, this message translates to:
+  /// **'90 días'**
+  String get range90d;
+
+  /// No description provided for @rangeAll.
+  ///
+  /// In es, this message translates to:
+  /// **'Todo'**
+  String get rangeAll;
+
+  /// No description provided for @statsEmpty.
+  ///
+  /// In es, this message translates to:
+  /// **'Aún no hay reproducciones en este periodo.'**
+  String get statsEmpty;
+
+  /// No description provided for @statsSubtitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Tus hábitos de escucha'**
+  String get statsSubtitle;
+
+  /// No description provided for @downloading.
+  ///
+  /// In es, this message translates to:
+  /// **'Descargando…'**
+  String get downloading;
+
+  /// No description provided for @downloadFailed.
+  ///
+  /// In es, this message translates to:
+  /// **'No se pudo descargar.'**
+  String get downloadFailed;
+
+  /// No description provided for @downloads.
+  ///
+  /// In es, this message translates to:
+  /// **'Descargas'**
+  String get downloads;
+
+  /// No description provided for @downloadFavorites.
+  ///
+  /// In es, this message translates to:
+  /// **'Descargar favoritos'**
+  String get downloadFavorites;
+
+  /// No description provided for @downloadedCount.
+  ///
+  /// In es, this message translates to:
+  /// **'{count, plural, =0{Ninguna descargada} =1{1 descargada} other{{count} descargadas}}'**
+  String downloadedCount(int count);
 }
 
 class _AppLocalizationsDelegate

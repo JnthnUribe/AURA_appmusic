@@ -470,6 +470,54 @@ class SearchResults {
   bool get isEmpty => tracks.isEmpty && albums.isEmpty && artists.isEmpty;
 }
 
+class TopArtist {
+  const TopArtist({required this.name, required this.plays});
+
+  factory TopArtist.fromJson(Map<String, dynamic> json) => TopArtist(
+    name: (json['name'] as String?) ?? '',
+    plays: (json['plays'] as num?)?.toInt() ?? 0,
+  );
+
+  final String name;
+  final int plays;
+}
+
+class StatsOverview {
+  const StatsOverview({
+    required this.range,
+    required this.plays,
+    required this.minutes,
+    required this.uniqueTracks,
+    required this.streakDays,
+    this.topTracks = const [],
+    this.topArtists = const [],
+  });
+
+  factory StatsOverview.fromJson(Map<String, dynamic> json) => StatsOverview(
+    range: (json['range'] as String?) ?? '30d',
+    plays: (json['plays'] as num?)?.toInt() ?? 0,
+    minutes: (json['minutes'] as num?)?.toDouble() ?? 0,
+    uniqueTracks: (json['unique_tracks'] as num?)?.toInt() ?? 0,
+    streakDays: (json['streak_days'] as num?)?.toInt() ?? 0,
+    topTracks: (json['top_tracks'] as List<dynamic>? ?? const [])
+        .map((item) => Track.fromJson(item as Map<String, dynamic>))
+        .toList(growable: false),
+    topArtists: (json['top_artists'] as List<dynamic>? ?? const [])
+        .map((item) => TopArtist.fromJson(item as Map<String, dynamic>))
+        .toList(growable: false),
+  );
+
+  final String range;
+  final int plays;
+  final double minutes;
+  final int uniqueTracks;
+  final int streakDays;
+  final List<Track> topTracks;
+  final List<TopArtist> topArtists;
+
+  bool get isEmpty => plays == 0;
+}
+
 DateTime? _date(Object? value) {
   if (value == null) return null;
   return DateTime.tryParse(value as String);

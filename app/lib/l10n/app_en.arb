@@ -103,5 +103,28 @@
   "close": "Close",
   "sleepTimer": "Sleep timer",
   "speed": "Speed",
-  "replayGain": "Volume"
+  "replayGain": "Volume",
+  "statsTitle": "Statistics",
+  "plays": "Plays",
+  "minutes": "Minutes listened",
+  "uniqueTracks": "Unique tracks",
+  "streakLabel": "Streak",
+  "range7d": "7 days",
+  "range30d": "30 days",
+  "range90d": "90 days",
+  "rangeAll": "All",
+  "statsEmpty": "No plays in this period yet.",
+  "statsSubtitle": "Your listening habits",
+  "downloading": "Downloading…",
+  "downloadFailed": "Download failed.",
+  "downloads": "Downloads",
+  "downloadFavorites": "Download favorites",
+  "downloadedCount": "{count, plural, =0{None downloaded} =1{1 downloaded} other{{count} downloaded}}",
+  "@downloadedCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  }
 }

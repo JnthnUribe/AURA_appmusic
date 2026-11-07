@@ -103,5 +103,28 @@
   "close": "Cerrar",
   "sleepTimer": "Temporizador",
   "speed": "Velocidad",
-  "replayGain": "Volumen"
+  "replayGain": "Volumen",
+  "statsTitle": "Estadísticas",
+  "plays": "Reproducciones",
+  "minutes": "Minutos escuchados",
+  "uniqueTracks": "Canciones distintas",
+  "streakLabel": "Racha",
+  "range7d": "7 días",
+  "range30d": "30 días",
+  "range90d": "90 días",
+  "rangeAll": "Todo",
+  "statsEmpty": "Aún no hay reproducciones en este periodo.",
+  "statsSubtitle": "Tus hábitos de escucha",
+  "downloading": "Descargando…",
+  "downloadFailed": "No se pudo descargar.",
+  "downloads": "Descargas",
+  "downloadFavorites": "Descargar favoritos",
+  "downloadedCount": "{count, plural, =0{Ninguna descargada} =1{1 descargada} other{{count} descargadas}}",
+  "@downloadedCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  }
 }

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -11,6 +13,7 @@ import '../../core/l10n/l10n.dart';
 import '../../core/providers.dart';
 import '../../core/utils/format.dart';
 import '../auth/auth_controller.dart';
+import '../downloads/download_controller.dart';
 import '../library/library_providers.dart';
 import 'settings_controller.dart';
 
@@ -25,6 +28,8 @@ class SettingsScreen extends ConsumerWidget {
     final auth = ref.watch(authControllerProvider);
     final user = auth is AuthSignedIn ? auth.user : null;
     final tracks = ref.watch(tracksProvider).value ?? const [];
+    final favorites = ref.watch(favoritesProvider).value ?? const [];
+    final downloaded = tracks.where(hasLocalAudio).length;
     final config = ref.watch(appConfigProvider);
 
     return AuraScaffold(
@@ -90,6 +95,26 @@ class SettingsScreen extends ConsumerWidget {
                   ),
                 ],
               ),
+            ),
+            const SizedBox(height: AuraSpace.xl),
+            _SettingsCard(
+              children: [
+                ListTile(
+                  leading: const Icon(Icons.insights_rounded),
+                  title: Text(
+                    context.l10n.statsTitle,
+                    style: AuraType.callout,
+                  ),
+                  subtitle: Text(
+                    context.l10n.statsSubtitle,
+                    style: AuraType.caption.copyWith(
+                      color: colors.textSecondary,
+                    ),
+                  ),
+                  trailing: const Icon(Icons.chevron_right_rounded),
+                  onTap: () => context.push('/stats'),
+                ),
+              ],
             ),
             const SizedBox(height: AuraSpace.xl),
             _SectionTitle(context.l10n.theme),
@@ -158,6 +183,32 @@ class SettingsScreen extends ConsumerWidget {
                       color: colors.textSecondary,
                     ),
                   ),
+                ),
+                Divider(color: colors.divider, height: 1),
+                ListTile(
+                  leading: const Icon(Icons.download_done_rounded),
+                  title: Text(
+                    context.l10n.downloadedCount(downloaded),
+                    style: AuraType.callout,
+                  ),
+                  subtitle: Text(
+                    context.l10n.downloads,
+                    style: AuraType.caption.copyWith(
+                      color: colors.textSecondary,
+                    ),
+                  ),
+                ),
+                Divider(color: colors.divider, height: 1),
+                ListTile(
+                  leading: const Icon(Icons.download_rounded),
+                  title: Text(
+                    context.l10n.downloadFavorites,
+                    style: AuraType.callout,
+                  ),
+                  enabled: favorites.isNotEmpty,
+                  onTap: favorites.isEmpty
+                      ? null
+                      : () => _downloadFavorites(context, ref),
                 ),
                 Divider(color: colors.divider, height: 1),
                 ListTile(
@@ -238,6 +289,20 @@ class SettingsScreen extends ConsumerWidget {
     }
   }
 
+  void _downloadFavorites(BuildContext context, WidgetRef ref) {
+    final favorites = ref.read(favoritesProvider).value ?? const [];
+    for (final track in favorites) {
+      unawaited(
+        ref.read(downloadControllerProvider.notifier).download(track),
+      );
+    }
+    AuraToast.show(
+      context,
+      context.l10n.downloading,
+      icon: Icons.download_rounded,
+    );
+  }
+
   Future<void> _confirmClearCache(BuildContext context, WidgetRef ref) async {
     final confirmed = await showDialog<bool>(
       context: context,
@@ -262,6 +327,12 @@ class SettingsScreen extends ConsumerWidget {
       ),
     );
     if (confirmed != true) return;
+    final cached = ref.read(tracksProvider).value ?? const [];
+    for (final track in cached.where(isLocallyAvailable)) {
+      await ref
+          .read(downloadControllerProvider.notifier)
+          .removeDownload(track);
+    }
     await ref.read(libraryRepositoryProvider).clearCache();
     if (context.mounted) {
       AuraToast.show(context, context.l10n.clearCache);

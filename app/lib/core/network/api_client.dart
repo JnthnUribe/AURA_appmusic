@@ -60,6 +60,12 @@ class ApiClient {
 
   final Dio _dio;
   final Dio _refreshDio;
+  final Dio _downloadDio = Dio(
+    BaseOptions(
+      connectTimeout: const Duration(seconds: 15),
+      receiveTimeout: const Duration(minutes: 10),
+    ),
+  );
   final TokenStore _tokens;
   Future<bool>? _refreshing;
 
@@ -122,6 +128,27 @@ class ApiClient {
 
   Future<dynamic> delete(String path, {Object? data}) =>
       _request(() => _dio.delete<dynamic>(path, data: data));
+
+  /// Downloads a signed media URL straight to disk, with progress and
+  /// cancellation. A separate Dio instance avoids sending the JWT to R2.
+  Future<void> download(
+    String url,
+    String path, {
+    void Function(int received, int total)? onProgress,
+    CancelToken? cancelToken,
+  }) async {
+    try {
+      await _downloadDio.download(
+        url,
+        path,
+        onReceiveProgress: onProgress,
+        cancelToken: cancelToken,
+        deleteOnError: true,
+      );
+    } on DioException catch (error) {
+      throw ApiException.fromDio(error);
+    }
+  }
 
   Future<dynamic> _request(Future<Response<dynamic>> Function() call) async {
     try {

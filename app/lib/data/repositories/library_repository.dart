@@ -151,6 +151,14 @@ class LibraryRepository {
     return CoverInfo.fromJson(data as Map<String, dynamic>);
   }
 
+  Future<StatsOverview> statsOverview({String range = '30d'}) async {
+    final data = await _api.get(
+      '/v1/stats/overview',
+      query: {'range': range},
+    );
+    return StatsOverview.fromJson(data as Map<String, dynamic>);
+  }
+
   Future<StreamInfo> streamFor(String trackId) async {
     final data = await _api.get('/v1/tracks/$trackId/stream');
     return StreamInfo.fromJson(data as Map<String, dynamic>);

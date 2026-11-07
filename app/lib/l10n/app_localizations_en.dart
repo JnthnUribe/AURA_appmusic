@@ -250,4 +250,61 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get replayGain => 'Volume';
+
+  @override
+  String get statsTitle => 'Statistics';
+
+  @override
+  String get plays => 'Plays';
+
+  @override
+  String get minutes => 'Minutes listened';
+
+  @override
+  String get uniqueTracks => 'Unique tracks';
+
+  @override
+  String get streakLabel => 'Streak';
+
+  @override
+  String get range7d => '7 days';
+
+  @override
+  String get range30d => '30 days';
+
+  @override
+  String get range90d => '90 days';
+
+  @override
+  String get rangeAll => 'All';
+
+  @override
+  String get statsEmpty => 'No plays in this period yet.';
+
+  @override
+  String get statsSubtitle => 'Your listening habits';
+
+  @override
+  String get downloading => 'Downloading…';
+
+  @override
+  String get downloadFailed => 'Download failed.';
+
+  @override
+  String get downloads => 'Downloads';
+
+  @override
+  String get downloadFavorites => 'Download favorites';
+
+  @override
+  String downloadedCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count downloaded',
+      one: '1 downloaded',
+      zero: 'None downloaded',
+    );
+    return '$_temp0';
+  }
 }

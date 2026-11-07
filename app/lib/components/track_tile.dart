@@ -7,6 +7,7 @@ import '../core/network/api_exception.dart';
 import '../core/providers.dart';
 import '../core/utils/format.dart';
 import '../data/local/database.dart';
+import '../features/downloads/download_controller.dart';
 import '../features/player/player_controller.dart';
 import 'cover_art.dart';
 import 'pressable_scale.dart';
@@ -39,6 +40,12 @@ class TrackTile extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final colors = context.auraColors;
+    final download = ref.watch(
+      downloadControllerProvider.select(
+        (state) => state.forTrack(track.id),
+      ),
+    );
+    final downloaded = hasLocalAudio(track);
     final subtitle = showAlbum && track.albumTitle != null
         ? '${track.artistNames} · ${track.albumTitle}'
         : track.artistNames;
@@ -109,6 +116,39 @@ class TrackTile extends ConsumerWidget {
                     fontFeatures: const [FontFeature.tabularFigures()],
                   ),
                 ),
+              if (download?.status == DownloadStatus.downloading)
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 6),
+                  child: SizedBox(
+                    width: 16,
+                    height: 16,
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2,
+                      value: download!.progress == 0
+                          ? null
+                          : download.progress,
+                      color: colors.accent,
+                    ),
+                  ),
+                )
+              else if (download?.status == DownloadStatus.queued)
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 6),
+                  child: Icon(
+                    Icons.schedule_rounded,
+                    size: 17,
+                    color: colors.textTertiary,
+                  ),
+                )
+              else if (downloaded)
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 6),
+                  child: Icon(
+                    Icons.download_done_rounded,
+                    size: 17,
+                    color: colors.success,
+                  ),
+                ),
               if (showFavorite)
                 IconButton(
                   onPressed: () => _toggleFavorite(context, ref),
@@ -162,66 +202,142 @@ class TrackTile extends ConsumerWidget {
     }
   }
 
+  Future<void> _download(BuildContext context, WidgetRef ref) async {
+    await ref.read(downloadControllerProvider.notifier).download(track);
+    if (!context.mounted) return;
+    final task = ref.read(downloadControllerProvider).forTrack(track.id);
+    if (task?.status == DownloadStatus.completed) {
+      AuraToast.show(
+        context,
+        context.l10n.downloaded,
+        icon: Icons.download_done_rounded,
+      );
+    } else if (task?.status == DownloadStatus.failed) {
+      AuraToast.show(
+        context,
+        task?.error ?? context.l10n.downloadFailed,
+        icon: Icons.error_outline_rounded,
+      );
+    }
+  }
+
+  Future<void> _removeDownload(BuildContext context, WidgetRef ref) async {
+    await ref
+        .read(downloadControllerProvider.notifier)
+        .removeDownload(track);
+    if (!context.mounted) return;
+    AuraToast.show(
+      context,
+      context.l10n.removeDownload,
+      icon: Icons.delete_outline_rounded,
+    );
+  }
+
   Future<void> _showActions(BuildContext context, WidgetRef ref) async {
     final colors = context.auraColors;
     await showModalBottomSheet<void>(
       context: context,
       showDragHandle: true,
       builder: (sheetContext) {
-        return SafeArea(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              ListTile(
-                leading: CoverArt(
-                  albumId: track.albumId,
-                  size: 48,
-                  placeholderSeed: track.albumTitle ?? track.title,
-                ),
-                title: Text(track.title, style: AuraType.headline),
-                subtitle: Text(
-                  track.artistNames,
-                  style: AuraType.footnote.copyWith(
-                    color: colors.textSecondary,
+        return Consumer(
+          builder: (context, sheetRef, _) {
+            final task = sheetRef.watch(
+              downloadControllerProvider.select(
+                (state) => state.forTrack(track.id),
+              ),
+            );
+            final downloaded = hasLocalAudio(track);
+            return SafeArea(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  ListTile(
+                    leading: CoverArt(
+                      albumId: track.albumId,
+                      size: 48,
+                      placeholderSeed: track.albumTitle ?? track.title,
+                    ),
+                    title: Text(track.title, style: AuraType.headline),
+                    subtitle: Text(
+                      track.artistNames,
+                      style: AuraType.footnote.copyWith(
+                        color: colors.textSecondary,
+                      ),
+                    ),
                   ),
-                ),
+                  const Divider(),
+                  _action(
+                    sheetContext,
+                    icon: Icons.play_arrow_rounded,
+                    label: context.l10n.play,
+                    onTap: () {
+                      Navigator.pop(sheetContext);
+                      _play(ref);
+                    },
+                  ),
+                  _action(
+                    sheetContext,
+                    icon: Icons.queue_music_rounded,
+                    label: context.l10n.addToQueue,
+                    onTap: () {
+                      Navigator.pop(sheetContext);
+                      ref
+                          .read(playerControllerProvider.notifier)
+                          .addToQueue(track);
+                    },
+                  ),
+                  _action(
+                    sheetContext,
+                    icon: track.favorite
+                        ? Icons.favorite_rounded
+                        : Icons.favorite_border_rounded,
+                    label: track.favorite
+                        ? context.l10n.removeFromFavorites
+                        : context.l10n.addToFavorites,
+                    onTap: () {
+                      Navigator.pop(sheetContext);
+                      _toggleFavorite(context, ref);
+                    },
+                  ),
+                  if (task != null && task.isBusy)
+                    _action(
+                      sheetContext,
+                      icon: Icons.close_rounded,
+                      label: task.status == DownloadStatus.downloading
+                          ? '${context.l10n.downloading} '
+                                '${(task.progress * 100).round()}%'
+                          : context.l10n.downloading,
+                      onTap: () {
+                        Navigator.pop(sheetContext);
+                        ref
+                            .read(downloadControllerProvider.notifier)
+                            .cancel(track.id);
+                      },
+                    )
+                  else if (downloaded)
+                    _action(
+                      sheetContext,
+                      icon: Icons.delete_outline_rounded,
+                      label: context.l10n.removeDownload,
+                      onTap: () {
+                        Navigator.pop(sheetContext);
+                        _removeDownload(context, ref);
+                      },
+                    )
+                  else
+                    _action(
+                      sheetContext,
+                      icon: Icons.download_rounded,
+                      label: context.l10n.download,
+                      onTap: () {
+                        Navigator.pop(sheetContext);
+                        _download(context, ref);
+                      },
+                    ),
+                ],
               ),
-              const Divider(),
-              _action(
-                sheetContext,
-                icon: Icons.play_arrow_rounded,
-                label: context.l10n.play,
-                onTap: () {
-                  Navigator.pop(sheetContext);
-                  _play(ref);
-                },
-              ),
-              _action(
-                sheetContext,
-                icon: Icons.queue_music_rounded,
-                label: context.l10n.addToQueue,
-                onTap: () {
-                  Navigator.pop(sheetContext);
-                  ref
-                      .read(playerControllerProvider.notifier)
-                      .addToQueue(track);
-                },
-              ),
-              _action(
-                sheetContext,
-                icon: track.favorite
-                    ? Icons.favorite_rounded
-                    : Icons.favorite_border_rounded,
-                label: track.favorite
-                    ? context.l10n.removeFromFavorites
-                    : context.l10n.addToFavorites,
-                onTap: () {
-                  Navigator.pop(sheetContext);
-                  _toggleFavorite(context, ref);
-                },
-              ),
-            ],
-          ),
+            );
+          },
         );
       },
     );

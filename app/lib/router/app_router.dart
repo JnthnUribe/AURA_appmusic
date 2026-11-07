@@ -15,6 +15,7 @@ import '../features/lyrics/lyrics_screen.dart';
 import '../features/player/now_playing_screen.dart';
 import '../features/search/search_screen.dart';
 import '../features/settings/settings_screen.dart';
+import '../features/stats/stats_screen.dart';
 import '../shell/app_shell.dart';
 
 final routerProvider = Provider<GoRouter>((ref) {
@@ -108,6 +109,10 @@ final routerProvider = Provider<GoRouter>((ref) {
           state,
           const LyricsScreen(),
         ),
+      ),
+      GoRoute(
+        path: '/stats',
+        builder: (context, state) => const StatsScreen(),
       ),
       GoRoute(
         path: '/gallery',
