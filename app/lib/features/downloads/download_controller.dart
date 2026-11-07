@@ -111,8 +111,14 @@ class DownloadController extends Notifier<DownloadState> {
     final path = track.localAudioPath;
     if (path == null) return;
     final file = File(path);
-    if (await file.exists()) {
-      await file.delete();
+    try {
+      if (await file.exists()) {
+        await file.delete();
+      }
+    } on FileSystemException {
+      // Windows may keep the file locked while it is playing. The Drift row is
+      // already cleared, so the track falls back to streaming and the orphan
+      // file is removed by the OS cleanup or a later attempt.
     }
   }
 
